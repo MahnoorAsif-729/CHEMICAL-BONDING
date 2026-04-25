@@ -1,0 +1,1137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Stoichiometry Exam Pro</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{
+  margin:0;
+  font-family: 'Segoe UI', sans-serif;
+  background: radial-gradient(circle at top left, #0f2027, #203a43, #2c5364);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  min-height:100vh;
+}
+
+/* MAIN CONTAINER */
+.container{
+  width:95%;
+  max-width:1100px;
+  background: rgba(255,255,255,0.08);
+  border-radius:22px;
+  overflow:hidden;
+  box-shadow:0 25px 70px rgba(0,0,0,0.5);
+  display:flex;
+  backdrop-filter: blur(18px);
+  border:1px solid rgba(255,255,255,0.15);
+}
+
+/* MAIN */
+.main{
+  flex:3;
+}
+
+/* SIDEBAR */
+.sidebar{
+  display:none;
+  flex:1;
+  background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03));
+  padding:15px;
+  border-left:1px solid rgba(255,255,255,0.1);
+  overflow-y:auto;
+  max-height:100vh;
+}
+
+/* HEADER */
+.header{
+  background: linear-gradient(135deg, #ff6a00, #ee0979);
+  color:white;
+  text-align:center;
+  padding:22px;
+  font-size:19px;
+  letter-spacing:1px;
+  font-weight:bold;
+  box-shadow:0 4px 20px rgba(0,0,0,0.3);
+}
+
+/* SCREEN */
+.screen{
+  padding:30px;
+  text-align:center;
+  color:white;
+}
+
+/* INPUT */
+input{
+  padding:12px;
+  width:min(90%,420px);
+  border-radius:12px;
+  border:1px solid rgba(255,255,255,0.2);
+  margin:6px 0;
+  outline:none;
+  font-size:16px;
+  background:rgba(255,255,255,0.08);
+  color:white;
+  transition:0.3s;
+}
+
+input::placeholder{
+  color:rgba(255,255,255,0.6);
+}
+
+input:focus{
+  border-color:#00f5d4;
+  box-shadow:0 0 12px rgba(0,245,212,0.5);
+}
+
+/* BUTTONS */
+button{
+  padding:10px 18px;
+  border:none;
+  border-radius:30px;
+  background: linear-gradient(135deg, #00f5d4, #00bbf9);
+  color:#0f2027;
+  cursor:pointer;
+  margin:6px 4px;
+  font-weight:bold;
+  transition:0.3s;
+  box-shadow:0 4px 15px rgba(0,0,0,0.3);
+}
+
+button:hover{
+  transform:translateY(-3px) scale(1.03);
+  box-shadow:0 8px 20px rgba(0,245,212,0.4);
+}
+
+button.refresh{
+  background: linear-gradient(135deg, #38ef7d, #11998e);
+}
+
+button.danger{
+  background: linear-gradient(135deg, #ff416c, #ff4b2b);
+}
+
+/* QUIZ */
+.quiz{
+  padding:20px;
+  color:white;
+}
+
+/* TOPBAR */
+.topbar{
+  display:flex;
+  justify-content:space-between;
+  font-weight:bold;
+  margin-bottom:10px;
+  flex-wrap:wrap;
+  gap:10px;
+}
+
+/* TIMER */
+.timer{
+  color:#ff4d6d;
+  font-size:18px;
+  font-weight:bold;
+  text-shadow:0 0 10px rgba(255,77,109,0.6);
+}
+
+/* QUESTION */
+.question{
+  font-size:20px;
+  margin-bottom:15px;
+  line-height:1.6;
+}
+
+/* OPTIONS */
+.option{
+  background: rgba(255,255,255,0.08);
+  padding:12px;
+  margin:8px 0;
+  border-radius:12px;
+  cursor:pointer;
+  transition:0.25s;
+  user-select:none;
+  border:1px solid rgba(255,255,255,0.1);
+  color:white;
+}
+
+.option:hover{
+  background: rgba(0,245,212,0.15);
+  border-color:#00f5d4;
+}
+
+/* CORRECT / WRONG */
+.option.correct{
+  background: linear-gradient(135deg, #00c853, #64dd17);
+  color:white;
+}
+
+.option.wrong{
+  background: linear-gradient(135deg, #ff1744, #d50000);
+  color:white;
+}
+
+/* NAV */
+.navbtns{
+  display:flex;
+  justify-content:space-between;
+  margin-top:15px;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+/* QUESTION BUTTONS */
+.qbtn{
+  width:35px;
+  height:35px;
+  margin:4px;
+  border-radius:50%;
+  border:none;
+  cursor:pointer;
+  background:rgba(255,255,255,0.2);
+  font-weight:bold;
+  color:white;
+  transition:0.3s;
+}
+
+.qbtn:hover{
+  transform:scale(1.15);
+  background:#00f5d4;
+  color:#000;
+}
+
+.qbtn.active{
+  background: linear-gradient(135deg,#00f5d4,#00bbf9);
+  color:black;
+}
+
+.qbtn.answered{
+  background: linear-gradient(135deg,#667eea,#764ba2);
+  color:white;
+}
+
+/* RESULT */
+.result{
+  padding:25px;
+  color:white;
+}
+
+/* CARD */
+.card{
+  background: rgba(255,255,255,0.08);
+  padding:15px;
+  margin:10px 0;
+  border-radius:12px;
+  border-left:5px solid;
+  text-align:left;
+  line-height:1.6;
+  backdrop-filter: blur(10px);
+}
+
+.right{
+  border-left-color:#00c853;
+}
+
+.wrongc{
+  border-left-color:#ff1744;
+}
+
+/* SCORE */
+.score{
+  font-size:3rem;
+  text-align:center;
+  color:#00f5d4;
+  font-weight:bold;
+  text-shadow:0 0 20px rgba(0,245,212,0.5);
+}
+
+/* LEADERBOARD */
+.leaderboard{
+  margin-top:20px;
+  padding:20px;
+  background: rgba(255,255,255,0.06);
+  border-radius:15px;
+  border:1px solid rgba(255,255,255,0.1);
+  max-height:300px;
+  overflow-y:auto;
+}
+
+/* ROW */
+.lb-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:12px 8px;
+  margin:6px 0;
+  background: rgba(255,255,255,0.08);
+  border-radius:10px;
+  transition:0.3s;
+}
+
+.lb-row:hover{
+  transform:translateX(6px);
+  background: rgba(0,245,212,0.1);
+}
+
+/* RANK */
+.rank{
+  font-size:20px;
+  font-weight:bold;
+  color:#00f5d4;
+}
+
+/* NAME */
+.student-name{
+  flex:1;
+  font-weight:500;
+  color:white;
+}
+
+/* SCORE */
+.student-score{
+  font-weight:bold;
+  color:#38ef7d;
+}
+
+/* HIGHLIGHT */
+.me-highlight{
+  background: linear-gradient(135deg,#00f5d4,#00bbf9) !important;
+  color:black !important;
+}
+
+/* NOTE */
+.small-note{
+  font-size:12px;
+  color:rgba(255,255,255,0.7);
+  margin-top:12px;
+  padding:10px;
+  background: rgba(255,255,255,0.05);
+  border-radius:8px;
+}
+
+/* HIDE */
+.hidden{
+  display:none !important;
+}
+
+/* MOBILE */
+@media (max-width:768px){
+  .container{ flex-direction:column; }
+  .sidebar{ display:none !important; }
+  .lb-row{ flex-direction:column; gap:6px; text-align:center; }
+}
+</style>    
+</head>
+<body>
+
+<div class="container">
+
+  <div class="main">
+    <div class="header">
+      <h2>Chemical Bonding TEST PRO</h2>
+      <div id="currentRoom" style="font-size:14px; opacity:0.9;"></div>
+    </div>
+
+    <!-- LOGIN -->
+    <div id="start" class="screen">
+      <h2>Enter For Test</h2>
+      <input id="name" placeholder="Enter Your Name">
+      <input id="room" placeholder="Room Code (Chemistry)" maxlength="20" style="text-transform:uppercase;">
+      
+      <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
+        <button onclick="createRoom()">🎯 Create Room</button>
+        <button onclick="joinRoom()">🚀 Join Room</button>
+        <button onclick="startTest()">✅ Start Exam</button>
+        <button onclick="refreshGlobalBoard()" class="refresh">🔄 Refresh</button>
+      </div>
+
+      <div class="leaderboard">
+        <div class="lb-header">
+          <div class="lb-title">🏆 Global Leaderboard</div>
+          <div class="lb-stats" id="globalStats">Loading...</div>
+        </div>
+        <div id="globalBoard">Enter room code to compete!</div>
+        <div class="small-note">
+          💡 Use same room code with friends to compete on same leaderboard!
+        </div>
+      </div>
+    </div>
+
+    <!-- QUIZ -->
+    <div id="quiz" class="quiz hidden">
+      <div class="topbar">
+        <div>Score: <span id="score">0</span></div>
+        <div>Q: <span id="qno">1</span>/35</div>
+        <div class="timer">⏱ <span id="time">15:00</span></div>
+      </div>
+
+      <div id="questionBox"></div>
+
+      <div class="navbtns">
+        <button onclick="prevQ()">⬅ Previous</button>
+        <button onclick="nextQ()">Next ➡</button>
+        <button onclick="showResult()" class="danger">⛔ End Test</button>
+      </div>
+    </div>
+
+    <!-- RESULT -->
+    <div id="result" class="result hidden">
+      <div class="score" id="finalScore">0/35</div>
+      <h3 id="resultName"></h3>
+      
+      <div style="margin:20px 0;">
+        <button onclick="goToRoomLeaderboard()" style="background:#4facfe; padding:12px 24px; font-size:16px;">🏆 Room Leaderboard</button>
+        <button onclick="backToStart()" style="background:#555;">🔙 New Test</button>
+      </div>
+      
+      <div id="explanations"></div>
+    </div>
+
+    <!-- ROOM LEADERBOARD SCREEN -->
+    <div id="roomLeaderboard" class="result hidden">
+      <h2>🏆 <span id="roomTitle"></span> Leaderboard</h2>
+      <div class="leaderboard">
+        <div class="lb-header">
+          <div class="lb-title">Top Students</div>
+          <div class="lb-stats" id="roomStats">Loading...</div>
+        </div>
+        <div id="roomBoard"></div>
+      </div>
+      <div style="margin-top:20px; display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
+        <button onclick="backToResult()" style="background:#4facfe;">📋 Back to Explanations</button>
+        <button onclick="backToStart()" class="danger">🏠 New Test</button>
+        <button onclick="refreshRoomBoard()" class="refresh">🔄 Refresh</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <h3>📌 Questions</h3>
+    <div id="nav"></div>
+  </div>
+
+</div>
+
+    <script>
+    // 🔥 FULLY WORKING LEADERBOARD - NO FIREBASE NEEDED!
+    class LeaderboardManager {
+    constructor() {
+        this.init();
+    }
+    
+    init() {
+        this.loadAllRooms();
+    }
+    
+    getRoomKey(room) {
+       return `bonding_${room.toUpperCase().trim()}`;
+    }
+   
+   
+    saveRoomData(room, scores) {
+        const key = this.getRoomKey(room);
+        localStorage.setItem(key, JSON.stringify({
+        room: room.toUpperCase(),
+        scores: scores,
+        lastUpdated: new Date().toISOString()   
+        }));
+        this.allRooms[key] = { room, scores, lastUpdated: new Date().toISOString() };
+    }
+    
+    loadAllRooms() {
+        this.allRooms = {};
+        for(let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if(key.startsWith('bonding_')) {
+            try {
+            this.allRooms[key] = JSON.parse(localStorage.getItem(key));
+            } catch(e) {
+            localStorage.removeItem(key);
+            }
+        }
+        }
+    }
+    
+    getRoomLeaderboard(room) {
+        const key = this.getRoomKey(room);
+        return this.allRooms[key]?.scores || [];
+    }
+    
+    addScore(room, name, score, total) {
+        let scores = this.getRoomLeaderboard(room);
+        // Add new scoresss
+      
+        scores.push({
+        name: name.trim(),
+        score: score,
+        total: total,
+        date: new Date().toISOString(),
+        percent: Math.round((score/total)*100)
+        });
+        
+        scores.sort((a,b) => b.score - a.score || new Date(b.date) - new Date(a.date));
+        
+        scores = scores.slice(0, 50);
+        
+        this.saveRoomData(room, scores);
+        return scores;
+    }
+    
+    renderLeaderboard(containerId, room, highlightName = null) {
+        const scores = this.getRoomLeaderboard(room);
+        const container = document.getElementById(containerId);
+        
+        if(scores.length === 0) {
+        container.innerHTML = '<div style="text-align:center; color:#666; padding:20px;">No scores yet!<br>Be the first to finish the test! 🎉</div>';
+        return { count: 0, topScore: 0 };
+        }
+        
+        let html = '';
+        scores.forEach((entry, index) => {
+        const isMe = highlightName && entry.name.toLowerCase() === highlightName.toLowerCase();
+        const rankClass = isMe ? 'me-highlight' : '';
+        const rankEmoji = index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : `#${index+1}`;
+        
+        html += `
+            <div class="lb-row ${rankClass}">
+            <div class="rank">${rankEmoji}</div>
+            <div class="student-name">${entry.name}</div>
+            <div class="student-score">${entry.score}/${entry.total} (${entry.percent}%)</div>
+            </div>
+        `;
+        });
+        
+        container.innerHTML = html;
+        return { 
+        count: scores.length, 
+        topScore: scores[0]?.score || 0,
+        myRank: scores.findIndex(s => s.name.toLowerCase() === highlightName?.toLowerCase()) + 1
+        };
+    }
+    
+    renderGlobalTop(containerId) {
+        const allScores = [];
+        Object.values(this.allRooms).forEach(roomData => {
+        roomData.scores.forEach(score => {
+            allScores.push({...score, room: roomData.room});
+        });
+        });
+        
+        allScores.sort((a,b) => b.score - a.score || new Date(b.date) - new Date(a.date));
+        const top10 = allScores.slice(0, 10);
+        
+        const container = document.getElementById(containerId);
+        let html = '';
+        
+        if(top10.length === 0) {
+        html = '<div style="text-align:center; color:#666;">No scores yet!</div>';
+        } else {
+        top10.forEach((entry, index) => {
+            const rankEmoji = index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : `#${index+1}`;
+            html += `
+            <div class="lb-row">
+                <div class="rank">${rankEmoji}</div>
+                <div class="student-name">${entry.name} <small style="color:#666;">(${entry.room})</small></div>
+                <div class="student-score">
+  ${entry.score}/${entry.total} (${entry.percent}%) - ${getGrade(entry.percent)}
+</div>
+            </div>
+            `;
+        });
+        }
+        
+        container.innerHTML = html;
+        
+        document.getElementById('globalStats').textContent = 
+        `📊 ${top10.length} students | 🥇 Top: ${top10[0]?.score || 0}/35`;
+    }
+    }
+
+    const leaderboard = new LeaderboardManager();
+
+    // Quiz variables
+   const questions = [
+
+{
+q:"The bond order of O₂⁺ ion, considering molecular orbital theory, is:",
+o:["1.5","2","2.5","3"],
+a:"2.5",
+e:"Removal of one electron from antibonding orbital increases bond order from 2 to 2.5."
+},
+
+{
+q:"The bond angle in NH₃ molecule is less than tetrahedral angle due to:",
+o:["Higher electronegativity of nitrogen","Presence of lone pair-bond pair repulsion","Hydrogen bonding","sp² hybridization"],
+a:"Presence of lone pair-bond pair repulsion",
+e:"Lone pair repels more strongly, reducing angle from 109.5° to 107.5°."
+},
+
+{
+q:"Which of the following species are paramagnetic due to presence of unpaired electrons?",
+o:["Only O₂","Only O₂⁺","O₂ and O₂⁻","O₂, O₂⁺ and O₂⁻"],
+a:"O₂, O₂⁺ and O₂⁻",
+e:"All contain unpaired electrons in π* orbitals."
+},
+
+{
+q:"Among the following, the most polar covalent bond considering electronegativity difference is:",
+o:["C–H","C–Cl","C–F","H–Cl"],
+a:"C–F",
+e:"Fluorine has highest electronegativity among given atoms."
+},
+
+{
+q:"The molecular geometry of CS₂ based on hybridization is:",
+o:["Bent due to lone pairs","Trigonal planar","Linear due to sp hybridization","Tetrahedral"],
+a:"Linear due to sp hybridization",
+e:"Central carbon is sp hybridized → 180°."
+},
+
+{
+q:"Which of the following molecules has zero dipole moment despite having polar bonds?",
+o:["NH₃","H₂O","CH₄","SO₂"],
+a:"CH₄",
+e:"Symmetrical tetrahedral structure cancels dipoles."
+},
+
+{
+q:"The bond dissociation energy of H–H bond is closest to:",
+o:["200 kJ/mol","300 kJ/mol","436 kJ/mol","500 kJ/mol"],
+a:"436 kJ/mol",
+e:"Standard bond energy value."
+},
+
+{
+q:"Which molecule cannot donate a lone pair to form a coordinate covalent bond with H⁺?",
+o:["NH₃","H₂O","CH₄","Cl⁻"],
+a:"CH₄",
+e:"No lone pair available on carbon."
+},
+
+{
+q:"The percent ionic character of CsF is approximately high because:",
+o:["Small size of Cs⁺","High lattice energy","Large electronegativity difference","High covalent character"],
+a:"Large electronegativity difference",
+e:"Big difference increases ionic nature (~92%)."
+},
+
+{
+q:"The geometry around each carbon atom in ethane molecule is:",
+o:["Linear","Trigonal planar","Tetrahedral","Bent"],
+a:"Tetrahedral",
+e:"Each carbon is sp³ hybridized."
+},
+
+{
+q:"Which compound is predominantly ionic in nature?",
+o:["CO₂","NH₃","NaCl","CH₄"],
+a:"NaCl",
+e:"Metal + non-metal → ionic bond."
+},
+
+{
+q:"The crystal structure of sodium chloride is best described as:",
+o:["Body centered cubic","Face centered cubic","Simple cubic","Hexagonal close packed"],
+a:"Face centered cubic",
+e:"NaCl has FCC lattice."
+},
+
+{
+q:"Lattice energy of an ionic compound increases with:",
+o:["Increase in ionic radius","Decrease in charge","Increase in ionic charge","Increase in distance between ions"],
+a:"Increase in ionic charge",
+e:"Higher charge → stronger attraction."
+},
+
+{
+q:"In solid state, ionic compounds generally behave as:",
+o:["Good conductors","Insulators","Semiconductors","Superconductors"],
+a:"Insulators",
+e:"Ions are fixed in lattice."
+},
+
+{
+q:"The coordination number of Na⁺ in NaCl crystal lattice is:",
+o:["4","6","8","12"],
+a:"6",
+e:"Each Na⁺ surrounded by 6 Cl⁻ ions."
+},
+
+{
+q:"The Born–Haber cycle is primarily used to determine:",
+o:["Ionization energy","Electron affinity","Lattice energy","Bond energy"],
+a:"Lattice energy",
+e:"Indirect method to calculate lattice energy."
+},
+
+{
+q:"Lattice energy decreases when:",
+o:["Charge increases","Ionic radius increases","Distance decreases","Polarization increases"],
+a:"Ionic radius increases",
+e:"Greater distance → weaker attraction."
+},
+
+{
+q:"Cleavage in ionic crystals occurs due to:",
+o:["Weak van der Waals forces","Covalent bonding","Electrostatic repulsion between like charges","Hydrogen bonding"],
+a:"Electrostatic repulsion between like charges",
+e:"Shift brings like ions together → repulsion."
+},
+
+{
+q:"The energy required to completely separate one mole of an ionic solid into gaseous ions is:",
+o:["Ionization energy","Bond energy","Lattice energy","Activation energy"],
+a:"Lattice energy",
+e:"Definition of lattice energy."
+},
+
+{
+q:"Which compound exhibits significant covalent character due to polarization?",
+o:["NaCl","KCl","LiCl","CsF"],
+a:"LiCl",
+e:"Small cation polarizes anion (Fajans’ rule)."
+},
+
+{
+q:"Which species contains a coordinate covalent bond formed by donation of lone pair?",
+o:["NH₃","NH₄⁺","CH₄","HCl"],
+a:"NH₄⁺",
+e:"NH₃ donates lone pair to H⁺."
+},
+
+{
+q:"The shape of a molecule with sp³ hybridization in absence of lone pairs is:",
+o:["Linear","Trigonal planar","Tetrahedral","Bent"],
+a:"Tetrahedral",
+e:"Ideal geometry for sp³."
+},
+
+{
+q:"Covalent bonds are typically formed between:",
+o:["Metals only","Non-metals only","Metal and non-metal","Noble gases"],
+a:"Non-metals only",
+e:"Sharing of electrons between non-metals."
+},
+
+{
+q:"The nature of bond present in HCl molecule is:",
+o:["Ionic","Nonpolar covalent","Polar covalent","Metallic"],
+a:"Polar covalent",
+e:"Moderate electronegativity difference."
+},
+
+{
+q:"The hybridization of oxygen atom in H₂O molecule is:",
+o:["sp","sp²","sp³","dsp²"],
+a:"sp³",
+e:"Two bonds + two lone pairs."
+},
+
+{
+q:"The bond order of O₂ molecule is:",
+o:["1","1.5","2","2.5"],
+a:"2",
+e:"From MO theory."
+},
+
+{
+q:"Among Cl₂, Br₂, and I₂, which has highest bond energy?",
+o:["Cl₂","Br₂","I₂","All equal"],
+a:"Cl₂",
+e:"Bond strength decreases down group."
+},
+
+{
+q:"The bond angles present in SF₆ molecule are:",
+o:["96° only","120° only","90° and 180°","109.5°"],
+a:"90° and 180°",
+e:"Octahedral geometry."
+},
+
+{
+q:"Which molecule has T-shaped geometry due to presence of lone pairs?",
+o:["SF₄","ClF₃","XeF₂","BF₃"],
+a:"ClF₃",
+e:"3 bonds + 2 lone pairs."
+},
+
+{
+q:"According to VSEPR theory, molecular shape is determined by:",
+o:["Atomic mass","Electron pair repulsions","Bond energy","Number of atoms only"],
+a:"Electron pair repulsions",
+e:"Minimization of repulsion defines shape."
+},
+
+{
+q:"Which molecule is linear despite having lone pairs on central atom?",
+o:["CO₂","BF₃","XeF₂","CH₄"],
+a:"XeF₂",
+e:"Lone pairs occupy equatorial positions."
+},
+
+{
+q:"The geometry of SF₄ molecule is:",
+o:["Tetrahedral","Seesaw","Square planar","Linear"],
+a:"Seesaw",
+e:"One lone pair distorts geometry."
+},
+
+{
+q:"The shape of ozone (O₃) molecule is:",
+o:["Linear","Trigonal planar","Bent","Tetrahedral"],
+a:"Bent",
+e:"Lone pair + resonance."
+},
+
+{
+q:"Which hydrogen halide exhibits strongest hydrogen bonding?",
+o:["HCl","HF","HBr","HI"],
+a:"HF",
+e:"Fluorine is highly electronegative."
+},
+
+{
+q:"Considering molecular orbital theory and electron configuration, which of the following species simultaneously exhibits highest bond order, shortest bond length, and paramagnetic behavior?",
+o:["O₂","O₂⁺","O₂⁻","O₂²⁻"],
+a:"O₂⁺",
+e:"O₂⁺ has bond order 2.5 (highest), shortest bond length, and still contains unpaired electron → paramagnetic."
+}
+
+];
+
+    let current = 0;
+    let score = 0;
+    let time = 900;
+    let timer = null;
+    let testName = "";
+    let testRoom = "";
+    let answers = Array(questions.length).fill(null);
+    let locked = Array(questions.length).fill(false);
+    let submitted = false;
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', function() {
+    updateRoomDisplay();
+    refreshGlobalBoard();
+    document.getElementById('room').addEventListener('input', function(e) {
+        e.target.value = e.target.value.toUpperCase();
+        updateRoomDisplay();
+    });
+    });
+
+    function updateRoomDisplay() {
+    const room = document.getElementById('room').value.trim();
+    const display = document.getElementById('currentRoom');
+    if(room) {
+        display.textContent = `📍 Room: ${room}`;
+        display.style.opacity = '1';
+    } else {
+        display.textContent = 'Enter room code to compete!';
+        display.style.opacity = '0.7';
+    }
+    }
+
+    function show(elId) { document.getElementById(elId).classList.remove("hidden"); }
+    function hide(elId) { document.getElementById(elId).classList.add("hidden"); }
+
+    function resetTestState() {
+    current = 0; score = 0; time = 900; submitted = false;
+    answers = Array(questions.length).fill(null);
+    locked = Array(questions.length).fill(false);
+    clearInterval(timer);
+    document.getElementById("score").innerText = "0";
+    document.getElementById("time").innerText = "15:00";
+    }
+
+    function validateInputs() {
+    testName = document.getElementById("name").value.trim();
+    testRoom = document.getElementById("room").value.trim().toUpperCase();
+    
+    if(!testName) {
+        alert("⚠️ Please enter your name!");
+        return false;
+    }
+    if(!testRoom) {
+        alert("⚠️ Enter Room Code to join leaderboard!\n\nExample: CHEMISTRY");
+        return false;
+    }
+    return true;
+    }
+
+    function createRoom() {
+    if(!validateInputs()) return;
+    alert(`🎉 Room "${testRoom}" created!\nShare this code with friends to compete!`);
+    updateRoomDisplay();
+    refreshRoomBoard();
+    }
+
+    function joinRoom() {
+    if(!validateInputs()) return;
+    alert(`✅ Joined room "${testRoom}"!\nYour competition leaderboard is ready!`);
+    updateRoomDisplay();
+    refreshRoomBoard();
+    }
+
+    function startTest() {
+    if(!validateInputs()) return;
+    
+    hide("start");
+    show("quiz");
+    document.querySelector(".sidebar").style.display = "block";
+    
+    resetTestState();
+    renderNav();
+    loadQ();
+    runTimer();
+    }
+
+    function runTimer() {
+    clearInterval(timer);
+    timer = setInterval(() => {
+        time--;
+        let m = Math.floor(time / 60);
+        let s = time % 60;
+        document.getElementById("time").innerText = `${m}:${s < 10 ? "0" + s : s}`;
+        if(time <= 0) showResult();
+    }, 1000);
+    }
+   
+
+   function loadQ(){
+  const q = questions[current];
+
+  let options = shuffle([...q.o]);
+
+  let html = `<div class="question">${current+1}. ${q.q}</div>`;
+
+   options.forEach(opt=>{
+  html += `<div class="option" onclick="ans(this, '${opt}')">
+    ${opt}
+  </div>`;
+});
+
+   document.getElementById("questionBox").innerHTML = html;
+
+  updateNav();
+  document.getElementById("qno").innerText = current + 1;
+}
+
+function ans(el, selected){
+  const q = questions[current];
+
+  if(locked[current]) return; 
+
+  answers[current] = selected;
+
+  document.querySelectorAll(".option").forEach(op=>{
+    if(op.innerText.trim() === q.a){
+      op.classList.add("correct");
+    }
+    if(op.innerText.trim() === selected && selected !== q.a){
+      op.classList.add("wrong");
+    }
+  });
+
+  // score logic
+  if(selected === q.a){
+    score++;
+  }
+
+  locked[current] = true;
+  document.getElementById("score").innerText = score;
+
+  updateNav();
+}
+
+    function nextQ() {
+  if(current < questions.length - 1){
+    current++;
+    loadQ();
+  }
+}
+
+function prevQ() {
+  if(current > 0){
+    current--;
+    loadQ();
+  }
+}
+
+    function renderNav() {
+    let nav = "";
+    for(let i = 0; i < questions.length; i++) {
+        nav += `<button class="qbtn" onclick="go(${i})">${i + 1}</button>`;
+    }
+    document.getElementById("nav").innerHTML = nav;
+    updateNav();
+    }
+
+    function go(i) {
+  current = i;
+  loadQ();
+}
+
+    function updateNav() {
+    document.querySelectorAll(".qbtn").forEach((b, i) => {
+        b.classList.remove("active", "answered");
+        if(i === current) b.classList.add("active");
+        if(answers[i] !== null) b.classList.add("answered");
+    });
+    }
+
+    function shuffle(array) {
+    return array.sort(() => Math.random() - 0.5);
+    }
+
+    async function saveScore() {
+    leaderboard.addScore(testRoom, testName, score, questions.length);
+    }
+
+    function refreshGlobalBoard() {
+    leaderboard.renderGlobalTop('globalBoard');
+    }
+
+    function refreshRoomBoard() {
+    if(!testRoom) return;
+    const stats = leaderboard.renderLeaderboard('roomBoard', testRoom, testName);
+    document.getElementById('roomTitle').textContent = testRoom;
+    document.getElementById('roomStats').textContent = 
+        `👥 ${stats.count} students | 🥇 Top: ${stats.topScore}/35`;
+    }
+
+    function goToRoomLeaderboard() {
+    hide("result");
+    show("roomLeaderboard");
+    refreshRoomBoard();
+    }
+
+    function backToResult() {
+    hide("roomLeaderboard");
+    show("result");
+    }
+
+    function backToStart() {
+    hide("quiz");
+    hide("result");
+    hide("roomLeaderboard");
+    show("start");
+    document.querySelector(".sidebar").style.display = "none";
+    document.getElementById("start").style.display = "block";
+    resetTestState();
+    refreshGlobalBoard();
+    }
+   async function showResult() {
+  if(submitted) return;
+  submitted = true;
+  
+  clearInterval(timer);
+  await saveScore();             // Save to leaderboard 
+  
+  hide("quiz");
+  show("result");
+  document.querySelector(".sidebar").style.display = "none";
+  hide("roomLeaderboard");
+  
+  //  PERCENTAGE CALCULATION 
+  let percent = 0;
+  if(questions.length > 0){
+    percent = Math.round((score / questions.length) * 100);
+  }
+
+  //  GRADING SYSTEM
+  let grade = "FAIL 🔴";
+  let statusColor = "#dc3545";
+
+  if (percent >= 80) {
+    grade = "DISTINCTION 🏆";
+    statusColor = "#6f42c1";
+  } 
+  else if (percent >= 70) {
+    grade = "A+ ⭐";
+    statusColor = "#007bff";
+  } 
+  else if (percent >= 60) {
+    grade = "A 👍";
+    statusColor = "#28a745";
+  } 
+  else if (percent >= 50) {
+    grade = "B 🙂";
+    statusColor = "#ffc107";
+  }
+
+  // RESULT DISPLAY 
+  document.getElementById("finalScore").innerHTML = `
+    <div style="font-size:3rem; font-weight:bold;">
+      ${score}/${questions.length}
+    </div>
+    <div style="
+      font-size:1.6rem;
+      font-weight:bold;
+      color:${statusColor};
+      margin-top:8px;
+    ">
+      ${percent}% - ${grade}
+    </div>
+  `;
+
+  document.getElementById("resultName").textContent = testName;
+  
+  // 🧾 EXPLANATIONS 
+  let html = '';
+  questions.forEach((q, i) => {
+    let user = answers[i];
+    html += `
+      <div class="card ${user === q.a ? 'right' : 'wrongc'}">
+        <b>Q${i + 1}:</b> ${q.q}<br><br>
+       <b>Your Answer:</b> ${user ? user : "Not Answered"} ${user === q.a ? "✔️" : "❌"}<br>
+<b>Correct:</b> ${q.a} ✔️<br>
+        <b>Correct:</b> ${q.o[q.a]} ✔️<br><br>
+        <i>${q.e}</i>
+      </div>
+    `;
+  });
+  document.getElementById("explanations").innerHTML = html;
+  
+  // 🏆 Rank alert (UNCHANGED)
+  setTimeout(() => {
+    const stats = leaderboard.renderLeaderboard('roomBoard', testRoom, testName);
+    if(stats.myRank && stats.myRank > 0) {
+      alert(`🎉 Your Rank: #${stats.myRank} in room ${testRoom}\nScore: ${score}/${questions.length}`);
+    }
+  }, 500);
+}   
+
+function getGrade(percent){
+  if(percent >= 80) return "A+ 🏆";
+  if(percent >= 70) return "A ⭐";
+  if(percent >= 60) return "B 👍";
+  if(percent >= 50) return "C 🙂";
+  return "F ❌";
+}
+
+    //  functions globally
+    window.createRoom = createRoom;
+    window.joinRoom = joinRoom;
+    window.startTest = startTest;
+    window.nextQ = nextQ;
+    window.prevQ = prevQ;
+    window.showResult = showResult;
+    window.goToRoomLeaderboard = goToRoomLeaderboard;
+    window.backToResult = backToResult;
+    window.backToStart = backToStart;
+    window.refreshGlobalBoard = refreshGlobalBoard;
+    window.refreshRoomBoard = refreshRoomBoard;
+    window.go = go;
+
+    // Auto   refresh
+    setInterval(refreshGlobalBoard, 30000);
+
+    console.log("✅ Stoichiometry Exam Pro - Fully Working Leaderboard Loaded!");
+    </script>
+
+</body>
+</html> 
